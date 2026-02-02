@@ -146,7 +146,8 @@ const XplainPersonalizationSection: React.FC = () => {
         </p>
 
         <p className="text-ink-light mb-6 text-lg">
-          We only made changes to <span className="text-ink font-bold">clarifications</span> and <span className="text-ink font-bold">suggestions</span> as summaries showed no clear proficiency differences.        </p>
+          We only made changes to <span className="text-ink font-bold">clarifications</span> and <span className="text-ink font-bold">suggestions</span> as summaries showed no clear proficiency differences.        
+        </p>
 
         {/* Feature Design: Clarifications */}
         <div className="space-y-6">

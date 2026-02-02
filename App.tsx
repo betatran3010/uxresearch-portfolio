@@ -25,7 +25,7 @@ const projects: Project[] = [
     contextOverview: (
       <>
         <p>
-          XPLAIN is a long-running HCI research project with Professor Susan Fussell examining how proactive AI content prediction and generation can support non-native speakers in real-time video meetings. I contributed to the design, prototyping, and evaluation of XPLAIN across multiple Wizard-of-Oz studies, spanning literature review, conversational scenario design, interface design and prototyping, survey development, user studies, and data analysis.
+          XPLAIN is a long-running HCI research project with Professor Susan Fussell that also participates in Cornell’s Entrepreneurship eLab student startup accelerator. The project explores how proactive AI content prediction and generation can support non-native speakers during real-time video meetings. I contributed to the design, prototyping, and evaluation of XPLAIN across multiple Wizard-of-Oz studies, spanning literature review, conversational scenario design, interface design and prototyping, survey development, user studies, and data analysis.
         </p>
 
         <p className="mt-4">
