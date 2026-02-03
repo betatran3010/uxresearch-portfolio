@@ -23,7 +23,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onBack, onNext }
 
   // Define sections dynamically based on the project
   const isXplain = project.id === 1;
-  const isReposet = project.id === 3;
+  const isReposet = project.id === 2;
 
   // Dynamic Theme Logic
   const theme = isReposet ? {

@@ -9,6 +9,7 @@ import { Project, SectionId, View } from './types';
 import { Linkedin, Mail, Heart, Github } from 'lucide-react';
 
 const projects: Project[] = [
+  // 1. XPLAIN
   {
     id: 1,
     title: "XPLAIN",
@@ -25,37 +26,15 @@ const projects: Project[] = [
     contextOverview: (
       <>
         <p>
-          XPLAIN is a long-running HCI research project with Professor Susan Fussell that also participates in Cornell’s Entrepreneurship eLab student startup accelerator. The project explores how proactive AI content prediction and generation can support non-native speakers during real-time video meetings. I contributed to the design, prototyping, and evaluation of XPLAIN across multiple Wizard-of-Oz studies, spanning literature review, conversational scenario design, interface design and prototyping, survey development, user studies, and data analysis.
-        </p>
-
-        <p className="mt-4">
-          <span className="text-ink font-bold">
-            This project is mentioned in this paper:
-          </span>{" "}
-          <a
-            href="https://dl.acm.org/doi/10.1145/3715070.3749273"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary underline hover:text-primary-dark"
-          >
-            https://dl.acm.org/doi/10.1145/3715070.3749273
-          </a>{" "}
-          <span className="text-ink font-bold">(CSCW Companion ’25)</span>
+          XPLAIN is a long-running HCI research project with Professor Susan Fussell that also participates in Cornell’s Entrepreneurship eLab student startup accelerator. The project explores how proactive AI content prediction and generation can support non-native speakers during real-time video meetings. I contributed to the design, prototyping, and evaluation of XPLAIN across multiple Wizard-of-Oz studies.
         </p>
       </>
     ),
   },
+
+  // 2. Reposet
   {
     id: 2,
-    title: "Designing for the Communication Needs of International Students in U.S. Healthcare Settings",
-    context: "Computing & Global Development Course",
-    problem: "How do international students experience communication challenges in U.S. healthcare, how effective are existing tools and strategies, and what unmet needs and design opportunities emerge across students, interpreters, and providers?",
-    image: `${import.meta.env.BASE_URL}images/health-international-students.png`,
-    tags: ["Social Computing", "ICTD", "Inclusive Design", "Health Communication"],
-    year: "Aug–Dec 2025",
-  },
-  {
-    id: 3,
     title: "Reposet",
     context: "Human-Computer Interaction Course",
     problem: "How might we help students reuse and restyle what they already own by reducing outfit decision effort while adapting to daily context and motivating sustainable wardrobe rotation?",
@@ -67,10 +46,25 @@ const projects: Project[] = [
     team: "4 designers",
     duration: "Aug–Dec 2025",
     tools: ["Figma"],
-    contextOverview: <>
-      Many college students own many clothes but repeatedly wear only a small subset due to rushed mornings, cluttered closets, and decision fatigue. Reposet is a wardrobe companion designed to help students dress more intentionally using what they already own, while staying prepared for changing weather, especially in places like Cornell with highly variable conditions, alongside shifting schedules and social contexts typical of student life. I contributed across the full HCI cycle, including user research, design, prototyping, and evaluation. <span className="text-ink font-bold">The project received an A.</span>
-    </>,
+    contextOverview: (
+      <>
+        Many college students own many clothes but repeatedly wear only a small subset due to rushed mornings, cluttered closets, and decision fatigue. Reposet helps students dress more intentionally using what they already own. <span className="text-ink font-bold">The project received an A.</span>
+      </>
+    ),
   },
+
+  // 3. Healthcare
+  {
+    id: 3,
+    title: "Designing for the Communication Needs of International Students in U.S. Healthcare Settings",
+    context: "Computing & Global Development Course",
+    problem: "How do international students experience communication challenges in U.S. healthcare, how effective are existing tools and strategies, and what unmet needs and design opportunities emerge across students, interpreters, and providers?",
+    image: `${import.meta.env.BASE_URL}images/health-international-students.png`,
+    tags: ["Social Computing", "ICTD", "Inclusive Design", "Health Communication"],
+    year: "Aug–Dec 2025",
+  },
+
+  // 4. Duolingo
   {
     id: 4,
     title: "Duolingo’s Note-Taking Feature Case Study",
@@ -204,17 +198,20 @@ const App: React.FC = () => {
                   <ProjectCard
                     project={project}
                     onClick={(id) => {
-                      if (id === 2) {
-                        // Healthcare Project - Opens PDF
+                      if (id === 3) {
+                        // Healthcare → PDF
                         window.open(
                           `${import.meta.env.BASE_URL}documents/healthcare-international-students.pdf`,
                           '_blank'
                         );
                       } else if (id === 4) {
-                        // Duolingo - Opens Website Link
-                        window.open('https://medium.com/@trannble/write-it-down-remember-it-later-designing-duolingos-note-taking-experience-9f8f5ce9a174', '_blank');
+                        // Duolingo → Medium
+                        window.open(
+                          'https://medium.com/@trannble/write-it-down-remember-it-later-designing-duolingos-note-taking-experience-9f8f5ce9a174',
+                          '_blank'
+                        );
                       } else {
-                        // Standard Projects - Opens Detail View
+                        // XPLAIN (1) or Reposet (2)
                         setCurrentView({ type: 'project', id });
                         window.scrollTo(0, 0);
                       }
