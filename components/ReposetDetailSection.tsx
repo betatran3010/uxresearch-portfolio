@@ -287,7 +287,7 @@ const ReposetDetailSection: React.FC = () => {
             <MessageSquare className="w-8 h-8 text-orange-400" />
             <h2 className="text-2xl font-heading font-black text-amber-900">User Research</h2>
           </div>
-          <p className="text-lg text-stone-600 font-medium max-w-4xl leading-relaxed">
+          <p className="text-base md:text-lg text-stone-600 font-medium max-w-4xl leading-relaxed">
             I conducted <span className="text-ink font-bold">contextual interviews</span> with Cornell students in dorm rooms and apartments, combining semi-structured interviews, closet tours, and “show & tell” of tools they currently use for outfit planning and wardrobe management.
           </p>
         </div>
@@ -298,7 +298,7 @@ const ReposetDetailSection: React.FC = () => {
             <Layers className="w-4 h-4" /> Affinity Diagramming
           </h4>
 
-          <p className="text-lg text-stone-600 font-medium max-w-4xl leading-relaxed mb-4">
+          <p className="text-base md:text-lg text-stone-600 font-medium max-w-4xl leading-relaxed mb-4">
             My groupmates and I synthesized and arranged the activity notes we coded from our contextual interviews.
           </p>
 
@@ -369,7 +369,7 @@ const ReposetDetailSection: React.FC = () => {
           <div className="absolute top-0 left-0 bg-orange-400 text-white text-xs font-black px-4 py-1.5 rounded-br-2xl rounded-tl-[2.5rem] uppercase tracking-widest">
             Problem Statement
           </div>
-          <p className="text-lg md:text-lg text-stone-700 leading-relaxed">
+          <p className="text-base md:text-lg text-stone-700 leading-relaxed">
             Cornell students who care about reusability and personal style <span className="text-ink font-bold">need to</span> express individuality through subtle, low-effort restyling of what they already own, <span className="text-ink font-bold">because</span> limited time, space, and closet visibility make it difficult to dress intentionally without overconsuming.
           </p>
         </div>
@@ -382,24 +382,24 @@ const ReposetDetailSection: React.FC = () => {
           Solution Space Exploration
         </h3>
 
-        <p className="text-lg text-stone-600 font-medium mb-6 leading-relaxed">
+        <p className="text-base md:text-lg text-stone-600 font-medium mb-6 leading-relaxed">
           My groupmates and I conducted a competitive analysis and identified where existing systems fall short:
         </p>
 
-        <ul className="space-y-4 list-disc pl-6 text-stone-600 marker:text-orange-400">
-          <li className="text-lg leading-relaxed">
+        <ul className="text-base md:text-lg space-y-4 list-disc pl-6 text-stone-600 marker:text-orange-400">
+          <li className="leading-relaxed">
             <span className="text-ink font-bold">Heavy upfront manual setup:</span> Items that are not photographed and cataloged never appear in recommendations.
           </li>
-          <li className="text-lg leading-relaxed">
+          <li className="leading-relaxed">
             <span className="text-ink font-bold">Little support for wardrobe change over time:</span> Current apps don't occasionally prompt updates.
           </li>
-          <li className="text-lg leading-relaxed">
+          <li className="leading-relaxed">
             <span className="text-ink font-bold">Weak connection between digital suggestions and physical closets:</span> Users still waste time searching through cluttered drawers or racks to act on recommendations.
           </li>
-          <li className="text-lg leading-relaxed">
+          <li className="leading-relaxed">
             <span className="text-ink font-bold">Poor adaptation to local micro-contexts:</span> Generic weather checks ignore weather fluctuations, building temperature differences, and schedule transitions common at Cornell.
           </li>
-          <li className="text-lg leading-relaxed">
+          <li className="leading-relaxed">
             <span className="text-ink font-bold">Little ongoing motivation to reuse clothing:</span> Surfacing underused items alone does not encourage users to choose them over familiar, convenient, or favorite options.
           </li>
         </ul>
@@ -411,7 +411,7 @@ const ReposetDetailSection: React.FC = () => {
           <PenTool className="w-8 h-8 text-orange-400" />
           Ideation & Concept Development
         </h3>
-        <p className="text-lg text-stone-600 font-medium mb-6">
+        <p className="text-base md:text-lg text-stone-600 font-medium mb-6">
           I explored multiple directions through sketching and collaborative ideation.
         </p>
 
@@ -420,9 +420,13 @@ const ReposetDetailSection: React.FC = () => {
           <h4 className="text-ink font-bold uppercase tracking-widest text-sm mb-4 flex items-center gap-2">
             <Camera className="w-4 h-4" /> Some of My Design Brainstorming Sketches
           </h4>
-          <div className="grid grid-cols-3 gap-4 max-w-5xl mx-auto">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="aspect-rectangle bg-stone-100 rounded-2xl border-2 border-stone-200 overflow-hidden group">
+              <div
+                key={i}
+                className="aspect-rectangle bg-stone-100 rounded-2xl border-2 border-stone-200 overflow-hidden group"
+              >
                 <img
                   src={`${import.meta.env.BASE_URL}images/sketch${i}.png`}
                   alt={`Sketch ${i}`}
@@ -459,7 +463,7 @@ const ReposetDetailSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-4">
 
           <div className="flex flex-col gap-3">
-            <p className="text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
+            <p className="text-base md:text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
               <span className="text-ink font-bold">Task 1</span>: Select the day’s outfit from the suggestions
             </p>
             <img
@@ -470,7 +474,7 @@ const ReposetDetailSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
+            <p className="text-base md:text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
               <span className="text-ink font-bold">Task 2</span>: Track wardrobe rotation & reusability motivation from the mascot
             </p>
             <img
@@ -481,7 +485,7 @@ const ReposetDetailSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
+            <p className="text-base md:text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
               <span className="text-ink font-bold">Task 3</span>: Adjust outfit through adaptive reminders
             </p>
             <img
@@ -492,7 +496,7 @@ const ReposetDetailSection: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-3">
-            <p className="text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
+            <p className="text-base md:text-lg text-stone-600 font-medium leading-relaxed min-h-[3rem]">
               <span className="text-ink font-bold">Task 4</span>: Add underused/overlooked clothes to update the wardrobe
             </p>
             <img
@@ -644,11 +648,11 @@ const ReposetDetailSection: React.FC = () => {
           Reflection
         </h3>
 
-        <p className="text-lg text-stone-600 font-medium mb-6 leading-relaxed">
+        <p className="text-base md:text-lg text-stone-600 font-medium mb-6 leading-relaxed">
           Overall feedback was positive. Participants said Reposet would help them make faster outfit decisions, locate clothes more easily, and feel better prepared throughout the day. The outfit photo check-in felt intuitive and low effort, and the bear companion was especially motivating. This reception reinforced for me how anchoring feedback to an emotionally engaging character can increase motivation.
         </p>
 
-        <p className="text-lg text-stone-600 font-medium mb-6 leading-relaxed">
+        <p className="text-base md:text-lg text-stone-600 font-medium mb-6 leading-relaxed">
           The project also surfaced important tradeoffs. Embedded closet cameras enabled strong digital-to-physical mapping but may be costly or unrealistic for most college students. While the class allowed us to design without overly considering practical constraints, it highlighted a learning opportunity for me: balancing design decisions with business and technical constraints. Additionally, user research and competitive analysis showed that impulsive or forgetful purchasing decisions often lead to existing clothes being underused, yet most tools focus only on post-purchase management. Integrating pre-purchase reflection (e.g., “Does this match what I already own?”) in the shopping context into our existing scope of everyday outfit planning adds significant contextual complexity. Thus, we intentionally scoped this out given time constraints, but see it as a promising direction for future work.        </p>
       </section>
 

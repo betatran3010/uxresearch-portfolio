@@ -26,55 +26,78 @@ const ImageCarousel: React.FC<{ items: CarouselItem[] }> = ({ items }) => {
   const [current, setCurrent] = React.useState(0);
 
   return (
-    <div className="mt-8 flex flex-col items-center gap-4">
-      <div className="flex items-center gap-4 w-full max-w-4xl">
+    <div className="mt-8">
 
-        {/* Left Arrow */}
-        <button
-          onClick={() =>
-            setCurrent((current - 1 + items.length) % items.length)
-          }
-          className="bg-white border border-primary/40 text-primary rounded-full p-2.5 shadow-sm"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-
-        {/* Image */}
-        <div className="w-full">
-          <img
-            src={items[current].img}
-            alt={items[current].label}
-            className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
-          />
-        </div>
-
-        {/* Right Arrow */}
-        <button
-          onClick={() =>
-            setCurrent((current + 1) % items.length)
-          }
-          className="bg-white border border-primary/40 text-primary rounded-full p-2.5 shadow-sm"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Dots */}
-      <div className="flex gap-2 mt-2">
-        {items.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`w-2.5 h-2.5 rounded-full ${i === current ? "bg-primary" : "bg-slate-300"
-              }`}
-          />
+      {/* ---------- MOBILE: STACKED ---------- */}
+      <div className="flex flex-col gap-6 md:hidden">
+        {items.map((item, i) => (
+          <div key={i} className="flex flex-col items-center gap-3">
+            <img
+              src={item.img}
+              alt={item.label}
+              className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
+            />
+            <p className="text-sm font-bold text-ink-light text-center">
+              {item.label}
+            </p>
+          </div>
         ))}
       </div>
 
-      {/* Label */}
-      <p className="text-sm font-bold text-ink-light text-center">
-        {items[current].label}
-      </p>
+      {/* ---------- DESKTOP: CAROUSEL ---------- */}
+      <div className="hidden md:flex flex-col items-center gap-4">
+
+        <div className="flex items-center gap-4 w-full max-w-4xl">
+
+          {/* Left Arrow */}
+          <button
+            onClick={() =>
+              setCurrent((current - 1 + items.length) % items.length)
+            }
+            className="bg-white border border-primary/40 text-primary rounded-full p-2.5 shadow-sm"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* Image */}
+          <div className="w-full">
+            <img
+              src={items[current].img}
+              alt={items[current].label}
+              className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
+            />
+          </div>
+
+          {/* Right Arrow */}
+          <button
+            onClick={() =>
+              setCurrent((current + 1) % items.length)
+            }
+            className="bg-white border border-primary/40 text-primary rounded-full p-2.5 shadow-sm"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div className="flex gap-2 mt-2">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`w-2.5 h-2.5 rounded-full ${
+                i === current ? "bg-primary" : "bg-slate-300"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Label */}
+        <p className="text-sm font-bold text-ink-light text-center">
+          {items[current].label}
+        </p>
+      </div>
+
     </div>
   );
 };
@@ -110,7 +133,7 @@ const XplainPersonalizationSection: React.FC = () => {
             <h3 className="text-xl font-heading font-bold text-ink">Motivation & Study Goal</h3>
           </div>
 
-          <p className="text-ink-light mb-6 text-lg">
+          <p className="text-ink-light mb-6 text-base md:text-lg">
             Baseline analyses revealed <span className="text-ink font-bold">proficiency-related differences</span> in clarification uptake, suggestion integration/reliance, and reading time and perceived usefulness of these features, motivating an investigation into <span className="text-ink font-bold">proficiency-aware</span> rather than uniform proactive support.
           </p>
 
@@ -141,11 +164,11 @@ const XplainPersonalizationSection: React.FC = () => {
         </div>
 
         {/* Scenario Script */}
-        <p className="text-ink-light mb-6 text-lg">
+        <p className="text-ink-light mb-6 text-base md:text-lg">
           We evaluated personalization using a <span className="text-ink font-bold">data privacy</span> discussion as it involves abstract concepts, institutional language, and culturally specific terminology that vary widely across proficiency levels while still eliciting participants’ values and perspectives easily.
         </p>
 
-        <p className="text-ink-light mb-6 text-lg">
+        <p className="text-ink-light mb-6 text-base md:text-lg">
           We only made changes to <span className="text-ink font-bold">clarifications</span> and <span className="text-ink font-bold">suggestions</span> as summaries showed no clear proficiency differences.        
         </p>
 
@@ -153,10 +176,10 @@ const XplainPersonalizationSection: React.FC = () => {
         <div className="space-y-6">
           <div className="flex flex-col md:flex-row gap-6 md:items-start">
             <div className="flex-1">
-              <h4 className="text-lg font-bold text-ink mb-3 flex items-center gap-2">
+              <h4 className="text-base md:text-lg font-bold text-ink mb-3 flex items-center gap-2">
                 <span className="bg-ink text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span> Clarifications
               </h4>
-              <p className="text-ink-light mb-4 text-lg">
+              <p className="text-ink-light mb-4 text-base md:text-lg">
                 Clarifications focused on 5 common sources of confusion: <span className="text-ink font-bold">slang, idioms, initialisms, complex words, and cultural references</span>. We tuned how difficult the clarified terms were at each proficiency level:
               </p>
             </div>
@@ -168,11 +191,11 @@ const XplainPersonalizationSection: React.FC = () => {
 
         {/* Feature Design: Suggestions */}
         <div className="space-y-6">
-          <h4 className="text-lg font-bold text-ink mb-3 flex items-center gap-2">
+          <h4 className="text-base md:text-lg font-bold text-ink mb-3 flex items-center gap-2">
             <span className="bg-ink text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> Suggestions
           </h4>
 
-          <p className="text-ink-light mb-4 text-lg">
+          <p className="text-ink-light mb-4 text-base md:text-lg">
             Suggestions can either support response planning or compete with users’ own reasoning. We redesigned suggestion framing to scale with support needs.          </p>
 
           {/* Visuals */}
@@ -222,7 +245,7 @@ const XplainPersonalizationSection: React.FC = () => {
           </div>
         </div>
 
-        <p className="text-ink-light mb-6 text-lg">
+        <p className="text-ink-light mb-6 text-base md:text-lg">
           I ran <span className="text-ink font-bold">11 user studies</span> for this study.
         </p>
 
