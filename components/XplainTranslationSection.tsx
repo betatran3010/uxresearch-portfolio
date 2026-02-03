@@ -265,7 +265,7 @@ const XplainTranslationSection: React.FC = () => {
           <div className="p-2 bg-primary-light rounded-lg">
             <CircleQuestionMark className="w-5 h-5 text-primary-dark" />
           </div>
-          <h3 className="text-xl font-heading font-bold text-ink">Hypotheses We Needed to Validate</h3>
+          <h3 className="text-xl font-heading font-bold text-ink">Hypotheses We Needed to Evaluate</h3>
         </div>
 
         <p className="text-ink-light mb-6 text-base md:text-lg">
