@@ -103,41 +103,52 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(() => getViewFromHash());
   const [targetScrollId, setTargetScrollId] = useState<number | null>(null);
 
+  // Handle scrolling when switching back to works
   useEffect(() => {
-    const handleHashChange = () => {
-      const newView = getViewFromHash();
-      setCurrentView(prev =>
-        JSON.stringify(prev) !== JSON.stringify(newView) ? newView : prev
-      );
-    };
+    if (currentView === 'works') {
+      // If there is a targetScrollId, wait a bit for rendering then scroll to it.
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  useEffect(() => {
-    let targetHash = '';
-    if (currentView === 'works') targetHash = 'works';
-    else if (currentView === 'about') targetHash = 'about';
-    else if (currentView === 'resume') targetHash = 'resume';
-    else if (typeof currentView === 'object') {
-      targetHash = `project/${currentView.id}`;
+      if (targetScrollId) {
+        // Attempt to scroll to the target card
+        const attemptScroll = (attempts: number) => {
+          const el = document.getElementById(`project-card-${targetScrollId}`);
+          if (el) {
+            // Found it! Scroll and clear target
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTargetScrollId(null);
+          } else if (attempts > 0) {
+            // Not found yet, try again shortly
+            setTimeout(() => attemptScroll(attempts - 1), 100);
+          } else {
+            // Give up, clear target
+            setTargetScrollId(null);
+          }
+        };
+        // Start attempts
+        setTimeout(() => attemptScroll(5), 100);
+      }
     }
+  }, [currentView, targetScrollId]);
 
-    const currentHash = window.location.hash.replace('#', '');
-    if (currentHash !== targetHash) {
-      window.history.pushState(null, '', `#${targetHash}`);
-    }
-  }, [currentView]);
+  const handleNextProject = () => {
+    // Per user request: "View Other Projects" on any page just anchors to the Works section 
+    // (beginning of XPLAIN card which is ID 1)
+    setTargetScrollId(1);
+    setCurrentView('works');
+  };
 
   const renderContent = () => {
-    if (typeof currentView === 'object') {
+    if (typeof currentView === 'object' && currentView.type === 'project') {
       const project = projects.find(p => p.id === currentView.id);
       if (project) {
         return (
           <ProjectDetail
             project={project}
-            onBack={() => setCurrentView('works')}
+            onBack={() => {
+              setCurrentView('works');
+              window.scrollTo(0, 0);
+            }}
+            onNext={handleNextProject}
           />
         );
       }
@@ -146,40 +157,46 @@ const App: React.FC = () => {
     switch (currentView) {
       case 'about':
         return <About />;
+      case 'works':
       default:
         return (
-          <>
+          <div className="animate-[fadeIn_0.5s_ease-out]">
             <Hero scrollTo={() => {
-              document.getElementById('works-grid')
-                ?.scrollIntoView({ behavior: 'smooth' });
+              const el = document.getElementById('works-grid');
+              el?.scrollIntoView({ behavior: 'smooth' });
             }} />
             <section id="works-grid" className="space-y-16 pt-8 scroll-mt-24">
               {projects.map(project => (
-                <div key={project.id} id={`project-card-${project.id}`}>
+                <div id={`project-card-${project.id}`} key={project.id}>
                   <ProjectCard
                     project={project}
                     onClick={(id) => {
-                      if (id === 3) {
+                      if (id === 4) {
+                        // Healthcare Project - Opens PDF
                         window.open(
                           `${import.meta.env.BASE_URL}documents/healthcare-international-students.pdf`,
                           '_blank'
                         );
-                      } else if (id === 4) {
+                      } else if (id === 2) {
+                        // Duolingo - Opens Website Link
                         window.open(
                           'https://medium.com/@trannble/write-it-down-remember-it-later-designing-duolingos-note-taking-experience-9f8f5ce9a174',
                           '_blank'
                         );
                       } else {
+                        // Standard Projects - Opens Detail View
                         setCurrentView({ type: 'project', id });
+                        window.scrollTo(0, 0);
                       }
                     }}
                   />
                 </div>
               ))}
             </section>
-          </>
+          </div>
         );
     }
+
   };
 
   return (
