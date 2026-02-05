@@ -183,11 +183,61 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-paper text-ink font-sans">
-      <Navbar currentView={currentView} onChangeView={setCurrentView} />
-      <main className="max-w-[1600px] mx-auto px-[30px] lg:px-20 xl:px-32 pt-28">
+    <div className="min-h-screen bg-paper text-ink font-sans relative">
+
+      <Navbar
+        currentView={currentView}
+        onChangeView={(view) => {
+          if (view === 'resume') {
+            window.open(
+              `${import.meta.env.BASE_URL}documents/tran-le-resume-uxresearch.pdf`,
+              '_blank'
+            );
+          } else {
+            setCurrentView(view);
+            window.scrollTo(0, 0);
+          }
+        }}
+      />
+
+      <main className="max-w-[1600px] mx-auto px-[30px] lg:px-20 xl:px-32 pt-28 mb-32">
         {renderContent()}
       </main>
+
+      {/* =======================
+          FOOTER
+      ======================= */}
+
+      <footer id={SectionId.FOOTER} className="bg-ink text-white py-12 px-[30px] lg:px-20 xl:px-32 mt-12 relative overflow-hidden rounded-t-[2.5rem]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-primary rounded-b-full"></div>
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary opacity-10 rounded-full blur-3xl animate-pulse"></div>
+
+        <div className="max-w-4xl mx-auto flex flex-col items-center text-center relative z-10 space-y-8">
+          <div className="flex items-center gap-3">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold">
+              Thanks for visiting my portfolio!
+            </h2>
+            <Heart className="w-8 h-8 text-primary fill-current" />
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="mailto:@tnl22@cornell.edu" className="p-3 bg-white/10 rounded-full hover:bg-primary hover:text-white transition-colors text-white" aria-label="Email">
+              <Mail className="w-5 h-5" />
+            </a>
+            <a href="https://www.linkedin.com/in/tranle3010/" className="p-3 bg-white/10 rounded-full hover:bg-primary hover:text-white transition-colors text-white" aria-label="LinkedIn">
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a href="https://github.com/betatran3010" className="p-3 bg-white/10 rounded-full hover:bg-primary hover:text-white transition-colors text-white" aria-label="GitHub">
+              <Github className="w-5 h-5" />
+            </a>
+          </div>
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-slate-400 font-bold text-sm">
+            <span>Let's connect at tnl22@cornell.edu!</span>
+          </div>
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-slate-400 font-bold text-sm">
+            <span>© 2026 Tran Le</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
