@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Hero from './components/Hero';
 import ProjectCard from './components/ProjectCard';
@@ -8,8 +7,15 @@ import About from './components/About';
 import { Project, SectionId, View } from './types';
 import { Linkedin, Mail, Heart, Github } from 'lucide-react';
 
+/* ------------------------------------------
+   LEGACY PROJECT ID COMPATIBILITY MAP
+   ------------------------------------------ */
+// Old shared links → new canonical IDs
+const LEGACY_PROJECT_ID_MAP: Record<number, number> = {
+  3: 2, // old #project/3 should open Reposet (now id 2)
+};
+
 const projects: Project[] = [
-  // 1. XPLAIN
   {
     id: 1,
     title: "XPLAIN",
@@ -26,13 +32,13 @@ const projects: Project[] = [
     contextOverview: (
       <>
         <p>
-          XPLAIN is a long-running HCI research project with Professor Susan Fussell that also participates in Cornell’s Entrepreneurship eLab student startup accelerator. The project explores how proactive AI content prediction and generation can support non-native speakers during real-time video meetings. I contributed to the design, prototyping, and evaluation of XPLAIN across multiple Wizard-of-Oz studies.
+          XPLAIN is a long-running HCI research project with Professor Susan Fussell that also participates in Cornell’s Entrepreneurship eLab student startup accelerator.
         </p>
       </>
     ),
   },
 
-  // 2. Reposet
+  // ✅ Reposet SECOND
   {
     id: 2,
     title: "Reposet",
@@ -46,136 +52,92 @@ const projects: Project[] = [
     team: "4 designers",
     duration: "Aug–Dec 2025",
     tools: ["Figma"],
-    contextOverview: (
-      <>
-        Many college students own many clothes but repeatedly wear only a small subset due to rushed mornings, cluttered closets, and decision fatigue. Reposet helps students dress more intentionally using what they already own. <span className="text-ink font-bold">The project received an A.</span>
-      </>
-    ),
   },
 
-  // 3. Healthcare
+  // ✅ Healthcare THIRD
   {
     id: 3,
     title: "Designing for the Communication Needs of International Students in U.S. Healthcare Settings",
     context: "Computing & Global Development Course",
-    problem: "How do international students experience communication challenges in U.S. healthcare, how effective are existing tools and strategies, and what unmet needs and design opportunities emerge across students, interpreters, and providers?",
+    problem: "How do international students experience communication challenges in U.S. healthcare?",
     image: `${import.meta.env.BASE_URL}images/health-international-students.png`,
     tags: ["Social Computing", "ICTD", "Inclusive Design", "Health Communication"],
     year: "Aug–Dec 2025",
   },
 
-  // 4. Duolingo
+  // ✅ Duolingo LAST
   {
     id: 4,
     title: "Duolingo’s Note-Taking Feature Case Study",
     context: "Digital Product Design Course",
-    problem: "How might we design for long-term memory and meaningful language recall, not just daily engagement, in Duolingo's fast-paced learning environment?",
+    problem: "How might we design for long-term memory and meaningful language recall?",
     image: `${import.meta.env.BASE_URL}images/duolingo-cover.png`,
     tags: ["UX/UI Design", "Product Design", "Mobile App", "EdTech"],
     year: "Feb–May 2025",
   },
 ];
 
-// Helper to parse the current hash into a View
+/* ------------------------------------------
+   HASH PARSER WITH LEGACY SUPPORT
+   ------------------------------------------ */
 const getViewFromHash = (): View => {
-  // Ensure window exists (for safety)
   if (typeof window === 'undefined') return 'works';
 
   const hash = window.location.hash.replace('#', '');
+
   if (hash === 'about') return 'about';
   if (hash === 'resume') return 'resume';
+
   if (hash.startsWith('project/')) {
-    const id = parseInt(hash.split('/')[1]);
-    if (!isNaN(id)) return { type: 'project', id };
+    const rawId = parseInt(hash.split('/')[1]);
+    if (!isNaN(rawId)) {
+      const mappedId = LEGACY_PROJECT_ID_MAP[rawId] ?? rawId;
+      return { type: 'project', id: mappedId };
+    }
   }
+
   return 'works';
 };
 
 const App: React.FC = () => {
-  // Initialize state based on current URL hash - using lazy init to avoid window access issues during module load
   const [currentView, setCurrentView] = useState<View>(() => getViewFromHash());
   const [targetScrollId, setTargetScrollId] = useState<number | null>(null);
 
-  // 1. Listen for URL hash changes (Browser Back/Forward)
   useEffect(() => {
     const handleHashChange = () => {
       const newView = getViewFromHash();
-      // Only update if different to avoid redundancy
-      setCurrentView(prev => {
-        if (JSON.stringify(prev) !== JSON.stringify(newView)) {
-          return newView;
-        }
-        return prev;
-      });
+      setCurrentView(prev =>
+        JSON.stringify(prev) !== JSON.stringify(newView) ? newView : prev
+      );
     };
 
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // 2. Update URL hash when State changes (UI Navigation)
   useEffect(() => {
     let targetHash = '';
     if (currentView === 'works') targetHash = 'works';
     else if (currentView === 'about') targetHash = 'about';
     else if (currentView === 'resume') targetHash = 'resume';
-    else if (typeof currentView === 'object' && currentView.type === 'project') {
+    else if (typeof currentView === 'object') {
       targetHash = `project/${currentView.id}`;
     }
 
     const currentHash = window.location.hash.replace('#', '');
     if (currentHash !== targetHash) {
-      // Use pushState to update URL without triggering hashchange event loop
       window.history.pushState(null, '', `#${targetHash}`);
     }
   }, [currentView]);
 
-  // Handle scrolling when switching back to works
-  useEffect(() => {
-    if (currentView === 'works') {
-      // If there is a targetScrollId, wait a bit for rendering then scroll to it.
-
-      if (targetScrollId) {
-        // Attempt to scroll to the target card
-        const attemptScroll = (attempts: number) => {
-          const el = document.getElementById(`project-card-${targetScrollId}`);
-          if (el) {
-            // Found it! Scroll and clear target
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTargetScrollId(null);
-          } else if (attempts > 0) {
-            // Not found yet, try again shortly
-            setTimeout(() => attemptScroll(attempts - 1), 100);
-          } else {
-            // Give up, clear target
-            setTargetScrollId(null);
-          }
-        };
-        // Start attempts
-        setTimeout(() => attemptScroll(5), 100);
-      }
-    }
-  }, [currentView, targetScrollId]);
-
-  const handleNextProject = () => {
-    // Per user request: "View Other Projects" on any page just anchors to the Works section 
-    // (beginning of XPLAIN card which is ID 1)
-    setTargetScrollId(1);
-    setCurrentView('works');
-  };
-
   const renderContent = () => {
-    if (typeof currentView === 'object' && currentView.type === 'project') {
+    if (typeof currentView === 'object') {
       const project = projects.find(p => p.id === currentView.id);
       if (project) {
         return (
           <ProjectDetail
             project={project}
-            onBack={() => {
-              setCurrentView('works');
-              window.scrollTo(0, 0);
-            }}
-            onNext={handleNextProject}
+            onBack={() => setCurrentView('works')}
           />
         );
       }
@@ -184,93 +146,48 @@ const App: React.FC = () => {
     switch (currentView) {
       case 'about':
         return <About />;
-      case 'works':
       default:
         return (
-          <div className="animate-[fadeIn_0.5s_ease-out]">
+          <>
             <Hero scrollTo={() => {
-              const el = document.getElementById('works-grid');
-              el?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('works-grid')
+                ?.scrollIntoView({ behavior: 'smooth' });
             }} />
             <section id="works-grid" className="space-y-16 pt-8 scroll-mt-24">
               {projects.map(project => (
-                <div id={`project-card-${project.id}`} key={project.id}>
+                <div key={project.id} id={`project-card-${project.id}`}>
                   <ProjectCard
                     project={project}
                     onClick={(id) => {
                       if (id === 3) {
-                        // Healthcare → PDF
                         window.open(
                           `${import.meta.env.BASE_URL}documents/healthcare-international-students.pdf`,
                           '_blank'
                         );
                       } else if (id === 4) {
-                        // Duolingo → Medium
                         window.open(
                           'https://medium.com/@trannble/write-it-down-remember-it-later-designing-duolingos-note-taking-experience-9f8f5ce9a174',
                           '_blank'
                         );
                       } else {
-                        // XPLAIN (1) or Reposet (2)
                         setCurrentView({ type: 'project', id });
-                        window.scrollTo(0, 0);
                       }
                     }}
                   />
                 </div>
               ))}
             </section>
-          </div>
+          </>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-paper text-ink font-sans selection:bg-primary-light selection:text-primary-dark relative">
-
-      <Navbar currentView={currentView} onChangeView={(view) => {
-        if (view === 'resume') {
-          window.open(`${import.meta.env.BASE_URL}documents/tran-le-resume-uxresearch.pdf`, '_blank');
-        } else {
-          setCurrentView(view);
-          window.scrollTo(0, 0);
-        }
-      }} />
-
-      <main className="max-w-[1600px] mx-auto px-[30px] lg:px-20 xl:px-32 mb-32 pt-28">
+    <div className="min-h-screen bg-paper text-ink font-sans">
+      <Navbar currentView={currentView} onChangeView={setCurrentView} />
+      <main className="max-w-[1600px] mx-auto px-[30px] lg:px-20 xl:px-32 pt-28">
         {renderContent()}
       </main>
-
-      <footer id={SectionId.FOOTER} className="bg-ink text-white py-12 px-[30px] lg:px-20 xl:px-32 mt-12 relative overflow-hidden rounded-t-[2.5rem]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-primary rounded-b-full"></div>
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary opacity-10 rounded-full blur-3xl animate-pulse"></div>
-
-        <div className="max-w-4xl mx-auto flex flex-col items-center text-center relative z-10 space-y-8">
-          <div className="flex items-center gap-3">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold">
-              Thanks for visiting my portfolio!
-            </h2>
-            <Heart className="w-8 h-8 text-primary fill-current" />
-          </div>
-          <div className="flex items-center gap-4">
-            <a href="mailto:@tnl22@cornell.edu" className="p-3 bg-white/10 rounded-full hover:bg-primary hover:text-white transition-colors text-white" aria-label="Email">
-              <Mail className="w-5 h-5" />
-            </a>
-            <a href="https://www.linkedin.com/in/tranle3010/" className="p-3 bg-white/10 rounded-full hover:bg-primary hover:text-white transition-colors text-white" aria-label="LinkedIn">
-              <Linkedin className="w-5 h-5" />
-            </a>
-            <a href="https://github.com/betatran3010" className="p-3 bg-white/10 rounded-full hover:bg-primary hover:text-white transition-colors text-white" aria-label="GitHub">
-              <Github className="w-5 h-5" />
-            </a>
-          </div>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-slate-400 font-bold text-sm">
-            <span>Let's connect at tnl22@cornell.edu!</span>
-          </div>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-slate-400 font-bold text-sm">
-            <span>© 2026 Tran Le</span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
