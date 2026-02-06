@@ -151,7 +151,7 @@ const XplainSolutionSection: React.FC = () => {
               <span className="bg-ink text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> Suggestions
             </h4>
             <p className="text-ink-light leading-relaxed mb-4 text-base md:text-lg">
-              Idea-level or sentence-level prompts delivered when users are expected to speak, reducing formulation pressure.
+              Idea-level or sentence-level prompts delivered when users are prompted for input (i.e., after questions), reducing formulation pressure.
             </p>
             <p className="text-ink-light leading-relaxed mb-4 text-base md:text-lg">
               <span className="text-ink font-bold">Value:</span> Increases contribution from hesitant speakers and reduces "silent participant" phenomenon.
