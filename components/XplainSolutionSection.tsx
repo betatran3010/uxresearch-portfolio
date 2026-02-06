@@ -230,11 +230,11 @@ const XplainSolutionSection: React.FC = () => {
             <ul className="space-y-3">
               {[
                 "Proactive clarifications reduced misunderstandings by ~30%, thus reducing backtracking and disruptive disfluencies.",
-                "Suggestions enabled ~25% faster decision-making with ~22% higher engagement.",
+                "Suggestions enabled ~25% faster decision-making with ~22% higher engagement, with higher efficiency for lower-proficiency users.",
                 "Summaries improved alignment by ~40%.",
                 "Disfluencies often reflected active evaluation and integration of AI support, not conversational failure.",
                 "Users reported 30%-80% efficiency boost over pausing or multitasking with web searching.",
-                "Images were perceived as especially efficient."
+                "Images sped up understanding of concrete concepts (e.g., food items)."
               ].map((item, i) => (
                 <li key={i} className="flex gap-3 text-green-800 leading-snug text-base md:text-lg">
                   <span className="block w-1.5 h-1.5 mt-2 bg-green-400 rounded-full shrink-0" />
